@@ -57,6 +57,8 @@ MODULE_LICENSE ( "GPL" );
 static char keycodes[512];
 void init_keycodes ( void );
 
+struct proc_dir_entry *proc_file_entry;
+
 /*
  * We need a local data structure, as it must be allocated for each new
  * mouse device plugged in the USB bus
@@ -160,9 +162,10 @@ int init_module ( void )
 	  return -1;
 	}
 
-      create_proc_read_entry ( "swkeybd", 0 /* default mode */ ,
-			       NULL /* parent dir */ ,
-			       swkeybd_read_procmem, NULL /* client data */  );       /* announce yourself */
+        proc_file_entry = proc_create("swkeybd", 0, NULL, &swkeybd_file_operations);
+        if(proc_file_entry == NULL)
+          return -ENOMEM;
+        return 0;
     }
 
   return retval;

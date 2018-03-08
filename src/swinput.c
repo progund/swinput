@@ -1,6 +1,9 @@
-
-
+#include <linux/init.h>  
+#include <linux/module.h>
+#include <linux/device.h>
 #include <linux/kernel.h>
+#include <linux/fs.h>    
+#include <linux/uaccess.h>
 #include "swinput.h"
 
 #define STATE_INVALID           -1
@@ -46,20 +49,23 @@ int parser_stateGet ( void )
  * Description: wrapper-function for printk (max. 1024 chars at all)
  *
  */
-void logger(int detail, char *progname, const char *func, int line, char *logmsg, ... )
+/*void logger(int detail, char *progname, const char *func, int line, char *logmsg, ... )
 {
-	static char buf[1024] = { 0 };
-	va_list ap = NULL;
-	
-	
-        /* build logmsg */
-        va_start(ap, logmsg);
-        vsnprintf(buf, 1024, logmsg, ap);
-        va_end(ap);
-                        
-        if(detail)
-                printk(KERN_INFO "%s: %s():%u: %s", progname, func, line, (char *) &buf);
-        else
-                printk(KERN_INFO "%s: %s", progname, (char *) &buf);
-        
+  static char buf[1024] = { 0 };
+  va_list ap = NULL;
+  
+  va_start(ap, logmsg);
+  vsnprintf(buf, 1024, logmsg, ap);
+  va_end(ap);
+  
+  if(detail)
+    {
+      printk(KERN_INFO "%s: %s():%u: %s", progname, func, line, (char *) &buf);
+    }
+  else
+    {
+      printk(KERN_INFO "%s: %s", progname, (char *) &buf);
+    }
+  
 }
+*/
